@@ -2,31 +2,31 @@
 pragma solidity ^0.8.0;
 
 contract NuclearSensors{
-
+    int public constant SCALING_FACTOR = 100000000;
     //Constant Values for normal metric ranges
 
-    int public constant RADIATION_VALUE = 11; // Divide by 10000
+    int public constant RADIATION_VALUE = 11 * SCALING_FACTOR/10000; // Divide by 10000
 
-    int public constant TEMPERATURE_MIN = 298;
-    int public constant TEMPERATURE_MAX = 311;
+    int public constant TEMPERATURE_MIN = 298 * SCALING_FACTOR;
+    int public constant TEMPERATURE_MAX = 311 * SCALING_FACTOR;
 
-    int public constant STEAM_A_PRESSURE_MIN = 67;
-    int public constant STEAM_A_PRESSURE_MAX = 79;
+    int public constant STEAM_A_PRESSURE_MIN = 67 * SCALING_FACTOR; 
+    int public constant STEAM_A_PRESSURE_MAX = 79 * SCALING_FACTOR;
 
-    int public constant STEAM_B_PRESSURE_MIN = 67;
-    int public constant STEAM_B_PRESSURE_MAX = 79;
+    int public constant STEAM_B_PRESSURE_MIN = 67 * SCALING_FACTOR;
+    int public constant STEAM_B_PRESSURE_MAX = 79 * SCALING_FACTOR;
 
-    int public constant LEVEL_PRESSURE_MIN = 32;
-    int public constant LEVEL_PRESSURE_MAX = 63;
+    int public constant LEVEL_PRESSURE_MIN = 32 * SCALING_FACTOR;
+    int public constant LEVEL_PRESSURE_MAX = 63 * SCALING_FACTOR;
 
-    int public constant TURBINE_LOAD_MIN = 40;
-    int public constant TURBINE_LOAD_MAX = 100;
+    int public constant TURBINE_LOAD_MIN = 40 * SCALING_FACTOR;
+    int public constant TURBINE_LOAD_MAX = 100 * SCALING_FACTOR;
 
-    int public constant RCS_PRESSURE_MIN = 148;
-    int public constant RCS_PRESSURE_MAX = 158;
+    int public constant RCS_PRESSURE_MIN = 148 * SCALING_FACTOR;
+    int public constant RCS_PRESSURE_MAX = 158 * SCALING_FACTOR;
 
-    int public constant TOTAL_LEAKAGE_MIN = 665; //Divide by 1000
-    int public constant TOTAL_LEAKAGE_MAX = 4015;
+    int public constant TOTAL_LEAKAGE_MIN = 665 * SCALING_FACTOR/1000; //Divide by 1000
+    int public constant TOTAL_LEAKAGE_MAX = 4015 * SCALING_FACTOR;
 
     enum vars {Rad, Temp, PA, PB, LP, PTL, RCSP, TL  }
 
@@ -81,7 +81,7 @@ contract NuclearSensors{
         Sensor_Array_Time_Map[time].In_Range_Status_Message = status_message;
         
     }
-    
+
     function add_sensor_data (
         int Time_Input,
         int Radiation_Input,
