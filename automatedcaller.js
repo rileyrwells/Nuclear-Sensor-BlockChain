@@ -6,11 +6,712 @@ const CONFIG = {
     // Replace with the RPC URL of the network where your contract is deployed 
     rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com', 
     //  Your wallet's private key for signing transactions
-    privateKey: 'privatekey', 
+    privateKey: 'd98fa7bc2975bc4e11bf289bd178bc3194768717b6375ed3bcc454c6ce201016', 
     // replace with the deployed address of your contract
-    contractAddress: 'contractAddress', 
+    contractAddress: '0xB2d8C2b36D2441B5dE29077bc8D90a49E3408b82', 
     // Replace with the Contracts ABI
-    contractABI: [ /* ABI*/ ], 
+    contractABI: [ 
+	[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "Time_Input",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "SensorOutOfRange",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "Time",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "Radiation",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "TemperatureAverage",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "PressureA",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "PressureB",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "LevelPressure",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "Power_Turbine_load",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "RCS_Pressure",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "Total_Leakage",
+				"type": "int256"
+			}
+		],
+		"name": "SensorRecordAdded",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "LEVEL_PRESSURE_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "LEVEL_PRESSURE_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "RADIATION_VALUE",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "RCS_PRESSURE_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "RCS_PRESSURE_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "SCALING_FACTOR",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "STEAM_A_PRESSURE_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "STEAM_A_PRESSURE_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "STEAM_B_PRESSURE_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "STEAM_B_PRESSURE_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "Sensor_Array",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "Time",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Radiation",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "TemperatureAverage",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureA",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureB",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "LevelPressure",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Power_Turbine_load",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "RCS_Pressure",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Total_Leakage",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "In_Range_Status_Message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"name": "Sensor_Array_Time_Map",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "Time",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Radiation",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "TemperatureAverage",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureA",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureB",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "LevelPressure",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Power_Turbine_load",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "RCS_Pressure",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Total_Leakage",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "In_Range_Status_Message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TEMPERATURE_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TEMPERATURE_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TOTAL_LEAKAGE_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TOTAL_LEAKAGE_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TURBINE_LOAD_MAX",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TURBINE_LOAD_MIN",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "Time_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Radiation_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Temperature_Average_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureA_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureB_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Level_Pressure_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Power_Turbine_load_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "RCS_Pressure_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Total_Leakage_Input",
+				"type": "int256"
+			}
+		],
+		"name": "add_sensor_data",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "Radiation_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Temperature_Average_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureA_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "PressureB_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Level_Pressure_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Power_Turbine_load_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "RCS_Pressure_Input",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "Total_Leakage_Input",
+				"type": "int256"
+			}
+		],
+		"name": "check_if_in_range",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "get_data_by_index",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "int256",
+						"name": "Time",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "Radiation",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "TemperatureAverage",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "PressureA",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "PressureB",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "LevelPressure",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "Power_Turbine_load",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "RCS_Pressure",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "Total_Leakage",
+						"type": "int256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "In_Range_Status_Message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct NuclearSensors.Sensor",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "time",
+				"type": "int256"
+			}
+		],
+		"name": "get_data_by_time",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "int256",
+						"name": "Time",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "Radiation",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "TemperatureAverage",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "PressureA",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "PressureB",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "LevelPressure",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "Power_Turbine_load",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "RCS_Pressure",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "Total_Leakage",
+						"type": "int256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "In_Range_Status_Message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct NuclearSensors.Sensor",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "time",
+				"type": "int256"
+			}
+		],
+		"name": "set_range_check_message",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+], 
     // Replace with the name of your csv file
     inputFile: 'NuclearUpdated.csv' 
 };
@@ -21,7 +722,7 @@ function readSensorData(filename) {
         const lines = data.trim().split('\n');
         const dataLines = lines.slice(1); 
 
-        const SCALING_FACTOR = 10000; 
+        const SCALING_FACTOR = 100000000; 
         
         const sensorRecords = dataLines.map(line => {
             const parts = line.split(',');
@@ -40,7 +741,7 @@ function readSensorData(filename) {
                 PressureB: Math.round(parseFloat(parts[4].trim()) * SCALING_FACTOR),     
                 LevelPressure: Math.round(parseFloat(parts[5].trim()) * SCALING_FACTOR), 
                 Power_Turbine_load: Math.round(parseFloat(parts[6].trim()) * SCALING_FACTOR), 
-                Radiation: Math.round(parseFloat(parts[7].trim()) * 100000),   
+                Radiation: Math.round(parseFloat(parts[7].trim()) * SCALING_FACTOR),   
                 Total_Leakage: Math.round(parseFloat(parts[8].trim()) * SCALING_FACTOR)  
             };
         }).filter(record => record !== null); 
@@ -95,17 +796,22 @@ async function processTransactions() {
                 console.log(`[${i + 1}/${sensorRecords.length}] Adding Time: ${sensor.Time}`);
                 console.log(`  RCS Pressure: ${sensor.RCS_Pressure} | Avg Temp: ${sensor.TemperatureAverage} | Rad: ${sensor.Radiation}`);
                 
-                const tx = await contract.add_sensor_data(
-                    sensor.Time, 
-                    sensor.Radiation,        
-                    sensor.TemperatureAverage, 
-                    sensor.PressureA, 
-                    sensor.PressureB, 
-                    sensor.LevelPressure, 
-                    sensor.Power_Turbine_load, 
-                    sensor.RCS_Pressure,      
-                    sensor.Total_Leakage 
+                // const tx = await contract.add_sensor_data(
+                //     sensor.Time, 
+                //     sensor.Radiation,        
+                //     sensor.TemperatureAverage, 
+                //     sensor.PressureA, 
+                //     sensor.PressureB, 
+                //     sensor.LevelPressure, 
+                //     sensor.Power_Turbine_load, 
+                //     sensor.RCS_Pressure,      
+                //     sensor.Total_Leakage 
+                // );
+
+                const tx = await contract.set_range_check_message(
+                    sensor.Time,  
                 );
+                
                 
                 console.log(`Transaction sent: ${tx.hash}`);
                 
@@ -117,14 +823,22 @@ async function processTransactions() {
                 const gasPrice = receipt.gasPrice || tx.gasPrice;
                 const txCost = gasUsed * gasPrice;
                 
+
                 console.log(`Confirmed in block ${receipt.blockNumber}`);
                 console.log(`Time taken: ${duration.toFixed(2)} seconds`);
                 console.log(`Gas used: ${gasUsed.toString()}`);
                 console.log(`Cost: ${ethers.formatEther(txCost)} ETH\n`);
                 
                 results.push({
-                    Time: sensor.Time,
-                    TemperatureAverage: sensor.TemperatureAverage,
+                    // Time: sensor.Time,
+                    // TemperatureAverage: sensor.TemperatureAverage,
+                    // PressureA: sensor.PressureA, 
+                    // PressureB: sensor.PressureB, 
+                    // LevelPressure: sensor.LevelPressure, 
+                    // PowerTurbineLoad: sensor.Power_Turbine_load, 
+                    // RCS_Pressure: sensor.RCS_Pressure,      
+                    // TotalLeakage: sensor.Total_Leakage, 
+
                     txHash: tx.hash,
                     blockNumber: receipt.blockNumber.toString(), 
                     gasUsed: gasUsed.toString(),                 
