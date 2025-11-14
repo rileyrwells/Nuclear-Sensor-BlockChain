@@ -61,7 +61,7 @@ contract NuclearSensors{
         int Total_Leakage
     );
 
-    event SensorOutOfRange(int Time_Input, string message);
+    // event SensorOutOfRange(int Time_Input, string message);
 
     function set_range_check_message(int time) public{
         
@@ -138,41 +138,44 @@ contract NuclearSensors{
         int RCS_Pressure_Input,
         int Total_Leakage_Input
         ) pure public returns(string memory){
+            string memory error_message = "";
             if (Radiation_Input != RADIATION_VALUE){
-                return "ERROR: Radiation Input out of range.";
+                error_message = string.concat(error_message,"ERROR: Radiation value out of range\n" );
             }
 
-            else if(Temperature_Average_Input < TEMPERATURE_MIN || Temperature_Average_Input > TEMPERATURE_MAX){
-                return "ERROR: Temperature Average out of range";
+            if(Temperature_Average_Input < TEMPERATURE_MIN || Temperature_Average_Input > TEMPERATURE_MAX){
+                error_message = string.concat(error_message,"ERROR: Temperature Average out of range\n" );
             }
 
-            else if(PressureA_Input < STEAM_A_PRESSURE_MIN || STEAM_A_PRESSURE_MAX > 79){
-                return "ERROR: Pressure A out of range";
+            if(PressureA_Input < STEAM_A_PRESSURE_MIN || STEAM_A_PRESSURE_MAX > STEAM_A_PRESSURE_MAX){
+                error_message = string.concat(error_message,"ERROR: Pressure A out of range\n" );
             }
 
-            else if(PressureB_Input < STEAM_B_PRESSURE_MIN || PressureB_Input > STEAM_B_PRESSURE_MAX){
-                return "ERROR: Pressure B out of range";
+            if(PressureB_Input < STEAM_B_PRESSURE_MIN || PressureB_Input > STEAM_B_PRESSURE_MAX){
+                error_message = string.concat(error_message,"ERROR: Pressure B out of range\n" );
             }
 
-            else if(Level_Pressure_Input < LEVEL_PRESSURE_MIN || Level_Pressure_Input > LEVEL_PRESSURE_MAX){
-                return "ERROR: Level Pressure out of range";
+            if(Level_Pressure_Input < LEVEL_PRESSURE_MIN || Level_Pressure_Input > LEVEL_PRESSURE_MAX){
+                error_message = string.concat(error_message,"ERROR: Level Pressure out of range\n" );
             }
 
-            else if(Power_Turbine_load_Input < TURBINE_LOAD_MIN || Power_Turbine_load_Input > TURBINE_LOAD_MAX){
-                return "ERROR: Power Turbine Load out of range";
+            if(Power_Turbine_load_Input < TURBINE_LOAD_MIN || Power_Turbine_load_Input > TURBINE_LOAD_MAX){
+                error_message = string.concat(error_message,"ERROR: Power Turbine Load out of range\n" );
             }
 
-            else if(RCS_Pressure_Input < RCS_PRESSURE_MIN || RCS_Pressure_Input > RCS_PRESSURE_MAX){
-                return "ERROR: RCS Pressure out of range";
+            if(RCS_Pressure_Input < RCS_PRESSURE_MIN || RCS_Pressure_Input > RCS_PRESSURE_MAX){
+                error_message = string.concat(error_message,"ERROR: RCS Pressure out of range\n" );
             }
 
-            else if(Total_Leakage_Input < TOTAL_LEAKAGE_MIN || Total_Leakage_Input > TOTAL_LEAKAGE_MAX){
-                return "ERROR: Total Leakage out of range";
+            if(Total_Leakage_Input < TOTAL_LEAKAGE_MIN || Total_Leakage_Input > TOTAL_LEAKAGE_MAX){
+                error_message = string.concat(error_message,"ERROR: Toal Leakage out of range\n" );
             }
 
-            else{
-                return "All values in range";
-            }
+           else if(bytes(error_message).length == 0){
+                error_message = "All values are in range!\n";
+           }
+
+           return error_message;
         }
 
     function get_data_by_index(uint256 index) public view returns (Sensor memory){
