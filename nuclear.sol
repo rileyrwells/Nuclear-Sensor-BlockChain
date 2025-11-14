@@ -28,6 +28,8 @@ contract NuclearSensors{
     int public constant TOTAL_LEAKAGE_MIN = 665; //Divide by 1000
     int public constant TOTAL_LEAKAGE_MAX = 4015;
 
+    enum vars {Rad, Temp, PA, PB, LP, PTL, RCSP, TL  }
+
     struct Sensor{
         int Time;
         int Radiation;
@@ -41,7 +43,7 @@ contract NuclearSensors{
 
         uint256 timestamp;
 
-        bool Values_In_Range;
+        string In_Range_Status_Message;
     }
 
     Sensor[] public Sensor_Array;     
@@ -61,7 +63,25 @@ contract NuclearSensors{
 
     event SensorOutOfRange(int Time_Input, string message);
 
+    function set_range_check_message(int time) public{
+        
+        string memory status_message;
+        
+        status_message = check_if_in_range(
+            Sensor_Array_Time_Map[time].Radiation, 
+            Sensor_Array_Time_Map[time].TemperatureAverage, 
+            Sensor_Array_Time_Map[time].PressureA, 
+            Sensor_Array_Time_Map[time].PressureB, 
+            Sensor_Array_Time_Map[time].LevelPressure, 
+            Sensor_Array_Time_Map[time].Power_Turbine_load, 
+            Sensor_Array_Time_Map[time].RCS_Pressure, 
+            Sensor_Array_Time_Map[time].Total_Leakage
+        );
 
+        Sensor_Array_Time_Map[time].In_Range_Status_Message = status_message;
+        
+    }
+    
     function add_sensor_data (
         int Time_Input,
         int Radiation_Input,
@@ -88,22 +108,6 @@ contract NuclearSensors{
             new_sensor.Total_Leakage = Total_Leakage_Input;
 
             new_sensor.timestamp = block.timestamp;
-
-            string memory error_message = 
-                check_if_in_range(
-                    Radiation_Input,
-                    Temperature_Average_Input,
-                    PressureA_Input,
-                    PressureB_Input,
-                    Level_Pressure_Input,
-                    Power_Turbine_load_Input,
-                    RCS_Pressure_Input,
-                    Total_Leakage_Input
-                );
-            
-            
-            emit SensorOutOfRange(Time_Input, error_message);
-            new_sensor.Values_In_Range = false;
 
             Sensor_Array.push(new_sensor);
             Sensor_Array_Time_Map[Time_Input] = new_sensor;
