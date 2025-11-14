@@ -2,9 +2,11 @@
 pragma solidity ^0.8.0;
 
 contract NuclearSensors{
-    int public constant SCALING_FACTOR = 100000000;
-    //Constant Values for normal metric ranges
 
+    //scaling factor: Used because inputs *usually* are floats.
+    int public constant SCALING_FACTOR = 100000000;
+
+    //Constant Values for normal metric ranges
     int public constant RADIATION_VALUE = 11 * SCALING_FACTOR/10000; // Divide by 10000
 
     int public constant TEMPERATURE_MIN = 298 * SCALING_FACTOR;
@@ -28,26 +30,28 @@ contract NuclearSensors{
     int public constant TOTAL_LEAKAGE_MIN = 665 * SCALING_FACTOR/1000; //Divide by 1000
     int public constant TOTAL_LEAKAGE_MAX = 4015 * SCALING_FACTOR;
 
-    enum vars {Rad, Temp, PA, PB, LP, PTL, RCSP, TL  }
-
+    
     struct Sensor{
-        int Time;
-        int Radiation;
-        int TemperatureAverage;
-        int PressureA;
-        int PressureB;
-        int LevelPressure;
-        int Power_Turbine_load;
-        int RCS_Pressure;
-        int Total_Leakage;
+        int Time;               //Time in seconds
+        int Radiation;          //Radiation in CPM
+        int TemperatureAverage; //Temperature average in Celsius
+        int PressureA;          //Generator A pressure in bars
+        int PressureB;          //Generator B pressure in bars
+        int LevelPressure;      //Level pressurizer measurement in %
+        int Power_Turbine_load; //Power turbine load in percentage
+        int RCS_Pressure;       //RCS Pressure in bars
+        int Total_Leakage;      //Total leakage from reactor building, in Kilograms
 
-        uint256 timestamp;
+        uint256 timestamp;      
 
         string In_Range_Status_Message;
     }
 
-    Sensor[] public Sensor_Array;     
-    mapping(int => Sensor) public Sensor_Array_Time_Map;
+    //Array Accessible with regular index
+    Sensor[] public Sensor_Array;    
+
+    //Array mapped with time 
+    mapping(int => Sensor) public Sensor_Array_Time_Map;    
 
     event SensorRecordAdded(
         int Time,
@@ -78,6 +82,7 @@ contract NuclearSensors{
             Sensor_Array_Time_Map[time].Total_Leakage
         );
 
+        //updating message (struct variable) for specific struct
         Sensor_Array_Time_Map[time].In_Range_Status_Message = status_message;
         
     }
@@ -109,6 +114,7 @@ contract NuclearSensors{
 
             new_sensor.timestamp = block.timestamp;
 
+            //push struct to both arrays
             Sensor_Array.push(new_sensor);
             Sensor_Array_Time_Map[Time_Input] = new_sensor;
 
@@ -139,6 +145,7 @@ contract NuclearSensors{
         int Total_Leakage_Input
         ) pure public returns(string memory){
             string memory error_message = "";
+
             if (Radiation_Input != RADIATION_VALUE){
                 error_message = string.concat(error_message,"ERROR: Radiation value out of range\n" );
             }
@@ -178,9 +185,12 @@ contract NuclearSensors{
            return error_message;
         }
 
+    //getter function for index
     function get_data_by_index(uint256 index) public view returns (Sensor memory){
         return Sensor_Array[index];
     }    
+
+    //getter function for time map
     function get_data_by_time(int time) public view returns (Sensor memory){
         return Sensor_Array_Time_Map[time];    
     }    
