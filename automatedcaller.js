@@ -6,7 +6,7 @@ const CONFIG = {
     // Replace with the RPC URL of the network where your contract is deployed 
     rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com', 
     //  Your wallet's private key for signing transactions
-    privateKey: 'd98fa7bc2975bc4e11bf289bd178bc3194768717b6375ed3bcc454c6ce201016', 
+    privateKey: 'privatekey', 
     // replace with the deployed address of your contract
     contractAddress: '0xB2d8C2b36D2441B5dE29077bc8D90a49E3408b82', 
     // Replace with the Contracts ABI
