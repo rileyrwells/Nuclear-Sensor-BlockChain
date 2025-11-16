@@ -44,7 +44,8 @@ contract NuclearSensors{
 
         uint256 timestamp;      
 
-        string In_Range_Status_Message;
+        string[] In_Range_Status_Message;   //array of status messages
+        uint256 num_errors;                 //number of errors
     }
 
     //Array Accessible with regular index
@@ -69,9 +70,9 @@ contract NuclearSensors{
 
     function set_range_check_message(int time) public{
         
-        string memory status_message;
+        string[] memory status_messages;
         
-        status_message = check_if_in_range(
+        status_messages = check_if_in_range(
             Sensor_Array_Time_Map[time].Radiation, 
             Sensor_Array_Time_Map[time].TemperatureAverage, 
             Sensor_Array_Time_Map[time].PressureA, 
@@ -83,8 +84,8 @@ contract NuclearSensors{
         );
 
         //updating message (struct variable) for specific struct
-        Sensor_Array_Time_Map[time].In_Range_Status_Message = status_message;
-        
+        Sensor_Array_Time_Map[time].In_Range_Status_Message = status_messages;
+        Sensor_Array_Time_Map[time].num_errors = status_messages.length;
     }
 
     function add_sensor_data (
@@ -143,46 +144,79 @@ contract NuclearSensors{
         int Power_Turbine_load_Input,
         int RCS_Pressure_Input,
         int Total_Leakage_Input
-        ) pure public returns(string memory){
-            string memory error_message = "";
+        ) pure public returns(string[] memory){
+            // string memory error_message = "";
+            string[] memory error_messages = new string[](8);
+            uint256 index = 0; 
 
             if (Radiation_Input != RADIATION_VALUE){
-                error_message = string.concat(error_message,"ERROR: Radiation value out of range\n" );
+                //error_message = string.concat(error_message,"ERROR: Radiation value out of range\n" );
+                error_messages[index] = ("ERROR: Radiation value out of range");
+                index++;
             }
 
             if(Temperature_Average_Input < TEMPERATURE_MIN || Temperature_Average_Input > TEMPERATURE_MAX){
-                error_message = string.concat(error_message,"ERROR: Temperature Average out of range\n" );
+                // error_message = string.concat(error_message,"ERROR: Temperature Average out of range\n" );
+                error_messages[index] = ("ERROR: Temperature Average out of range");
+                index++;
             }
 
-            if(PressureA_Input < STEAM_A_PRESSURE_MIN || STEAM_A_PRESSURE_MAX > STEAM_A_PRESSURE_MAX){
-                error_message = string.concat(error_message,"ERROR: Pressure A out of range\n" );
+            if(PressureA_Input < STEAM_A_PRESSURE_MIN || PressureA_Input > STEAM_A_PRESSURE_MAX){
+                //error_message = string.concat(error_message,"ERROR: Pressure A out of range\n" );
+                error_messages[index] = ("ERROR: Pressure A out of range");
+                index++;
             }
 
             if(PressureB_Input < STEAM_B_PRESSURE_MIN || PressureB_Input > STEAM_B_PRESSURE_MAX){
-                error_message = string.concat(error_message,"ERROR: Pressure B out of range\n" );
+                //error_message = string.concat(error_message,"ERROR: Pressure B out of range\n" );
+                error_messages[index] = ("ERROR: Pressure B out of range");
+                index++;
             }
 
             if(Level_Pressure_Input < LEVEL_PRESSURE_MIN || Level_Pressure_Input > LEVEL_PRESSURE_MAX){
-                error_message = string.concat(error_message,"ERROR: Level Pressure out of range\n" );
+                //error_message = string.concat(error_message,"ERROR: Level Pressure out of range\n" );
+                error_messages[index] = ("ERROR: Level Pressure out of range");
+                index++;
             }
 
             if(Power_Turbine_load_Input < TURBINE_LOAD_MIN || Power_Turbine_load_Input > TURBINE_LOAD_MAX){
-                error_message = string.concat(error_message,"ERROR: Power Turbine Load out of range\n" );
+                //error_message = string.concat(error_message,"ERROR: Power Turbine Load out of range\n" );
+                error_messages[index] = ("ERROR: Power Turbine Load out of range");
+                index++;
             }
 
             if(RCS_Pressure_Input < RCS_PRESSURE_MIN || RCS_Pressure_Input > RCS_PRESSURE_MAX){
-                error_message = string.concat(error_message,"ERROR: RCS Pressure out of range\n" );
+                //error_message = string.concat(error_message,"ERROR: RCS Pressure out of range\n" );
+                error_messages[index] = ("ERROR: RCS Pressure out of range");
+                index++;
             }
 
             if(Total_Leakage_Input < TOTAL_LEAKAGE_MIN || Total_Leakage_Input > TOTAL_LEAKAGE_MAX){
-                error_message = string.concat(error_message,"ERROR: Toal Leakage out of range\n" );
+                //error_message = string.concat(error_message,"ERROR: Toal Leakage out of range\n" );
+                error_messages[index] = ("ERROR: Toal Leakage out of range");
+                index++;
             }
 
-           else if(bytes(error_message).length == 0){
-                error_message = "All values are in range!\n";
-           }
+            if(index == 0){
+                    //resizing array to 1 before returning
 
-           return error_message;
+                    string[] memory final_messages = new string[](1);
+                    final_messages[0] = "All values are in range!";
+
+                    return final_messages;
+            }
+
+            else {
+                //resizing array to number of errors before returning
+
+                string[] memory final_messages = new string[](index);
+                for (uint256 i = 0; i < index; i++) {
+                    final_messages[i] = error_messages[i];
+                }
+                
+                return final_messages;
+            }
+
         }
 
     //getter function for index
