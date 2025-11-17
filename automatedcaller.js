@@ -4,33 +4,14 @@ const { ethers } = require('ethers');
 // --- CONFIGURATION ---
 const CONFIG = {
     // Replace with the RPC URL of the network where your contract is deployed 
-    rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com', 
+    rpcUrl: 'https://rpc-sepolia.rockx.com', 
     //  Your wallet's private key for signing transactions
-    privateKey: 'privatekey', 
+    privateKey: '**PRIVATE KEY HERE**', 
     // replace with the deployed address of your contract
-    contractAddress: '0xB2d8C2b36D2441B5dE29077bc8D90a49E3408b82', 
+    contractAddress: '**CONTRACT ADDRESS HERE**', 
     // Replace with the Contracts ABI
     contractABI: [ 
 	[
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "int256",
-				"name": "Time_Input",
-				"type": "int256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "message",
-				"type": "string"
-			}
-		],
-		"name": "SensorOutOfRange",
-		"type": "event"
-	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -283,9 +264,9 @@ const CONFIG = {
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
-				"name": "In_Range_Status_Message",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "num_errors",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -352,9 +333,9 @@ const CONFIG = {
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
-				"name": "In_Range_Status_Message",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "num_errors",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -537,9 +518,9 @@ const CONFIG = {
 		"name": "check_if_in_range",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "string[]",
 				"name": "",
-				"type": "string"
+				"type": "string[]"
 			}
 		],
 		"stateMutability": "pure",
@@ -608,9 +589,14 @@ const CONFIG = {
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "string[]",
 						"name": "In_Range_Status_Message",
-						"type": "string"
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "num_errors",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct NuclearSensors.Sensor",
@@ -684,9 +670,14 @@ const CONFIG = {
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "string[]",
 						"name": "In_Range_Status_Message",
-						"type": "string"
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "num_errors",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct NuclearSensors.Sensor",
@@ -714,6 +705,15 @@ const CONFIG = {
 ], 
     // Replace with the name of your csv file
     inputFile: 'NuclearUpdated.csv' 
+};
+
+const bigIntReplacer = (key, value) => {
+    // Check if the value is a BigInt type
+    if (typeof value === 'bigint') {
+        // Convert BigInt to its string representation
+        return value.toString();
+    }
+    return value;
 };
 
 function readSensorData(filename) {
@@ -811,7 +811,9 @@ async function processTransactions() {
                 const tx = await contract.set_range_check_message(
                     sensor.Time,  
                 );
+
                 
+
                 
                 console.log(`Transaction sent: ${tx.hash}`);
                 
@@ -822,7 +824,12 @@ async function processTransactions() {
                 const gasUsed = receipt.gasUsed;
                 const gasPrice = receipt.gasPrice || tx.gasPrice;
                 const txCost = gasUsed * gasPrice;
+
+                //new addition
+                const updated_Sensor_Struct = await contract.get_data_by_time(sensor.Time);
+                const number_errors = updated_Sensor_Struct.num_errors;
                 
+                console.log(`Number of errors: ${number_errors}`);
 
                 console.log(`Confirmed in block ${receipt.blockNumber}`);
                 console.log(`Time taken: ${duration.toFixed(2)} seconds`);
@@ -830,15 +837,18 @@ async function processTransactions() {
                 console.log(`Cost: ${ethers.formatEther(txCost)} ETH\n`);
                 
                 results.push({
-                    // Time: sensor.Time,
+                    Time: sensor.Time,
                     // TemperatureAverage: sensor.TemperatureAverage,
                     // PressureA: sensor.PressureA, 
                     // PressureB: sensor.PressureB, 
                     // LevelPressure: sensor.LevelPressure, 
                     // PowerTurbineLoad: sensor.Power_Turbine_load, 
-                    // RCS_Pressure: sensor.RCS_Pressure,      
+                    // RCS_Pressure: sensor.RCS_Pressure,
+                    // Radiation: sensor.Radiation,
                     // TotalLeakage: sensor.Total_Leakage, 
-
+                    
+                    NumErrors: number_errors,
+                    
                     txHash: tx.hash,
                     blockNumber: receipt.blockNumber.toString(), 
                     gasUsed: gasUsed.toString(),                 
@@ -873,8 +883,8 @@ async function processTransactions() {
         console.log(`TOTAL COST: ${totalCost.toFixed(6)} ETH`);
         console.log('\u2550'.repeat(50) + '\n');
         
-        fs.writeFileSync('sensor_results_new.json', JSON.stringify(results, null, 2));
-        console.log('Results saved to sensor_results_new.json');
+        fs.writeFileSync('new_error.json', JSON.stringify(results, bigIntReplacer, 2));
+        console.log('Results saved to new_error_test.json');
         
     } catch (error) {
         console.error(`\nFatal error during setup or execution: ${error.message}`);
