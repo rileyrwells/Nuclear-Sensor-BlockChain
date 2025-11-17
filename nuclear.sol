@@ -83,9 +83,19 @@ contract NuclearSensors{
             Sensor_Array_Time_Map[time].Total_Leakage
         );
 
-        //updating message (struct variable) for specific struct
         Sensor_Array_Time_Map[time].In_Range_Status_Message = status_messages;
-        Sensor_Array_Time_Map[time].num_errors = status_messages.length;
+
+        //if array is size 1 but there are no errors, we set num_errors to 0.
+        if(status_messages.length == 1 && (keccak256(abi.encodePacked(status_messages[0])) == keccak256(abi.encodePacked("All values are in range!")))){
+            Sensor_Array_Time_Map[time].num_errors = 0;                      
+        }
+
+        
+        else{
+            //updating message (struct variable) for specific struct
+            Sensor_Array_Time_Map[time].num_errors = status_messages.length;
+        }
+        
     }
 
     function add_sensor_data (
@@ -213,7 +223,7 @@ contract NuclearSensors{
                 for (uint256 i = 0; i < index; i++) {
                     final_messages[i] = error_messages[i];
                 }
-                
+
                 return final_messages;
             }
 
